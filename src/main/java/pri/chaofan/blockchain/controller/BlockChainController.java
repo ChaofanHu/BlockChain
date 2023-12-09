@@ -1,11 +1,13 @@
-package pri.chaofan.blockchain;
+package pri.chaofan.blockchain.controller;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pri.chaofan.blockchain.service.BlockchainService;
+import pri.chaofan.blockchain.pojo.Block;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,27 +21,28 @@ public class BlockChainController {
     private BlockchainService blockchainService;
 
     @GetMapping("/genesis")
-    public Block addGenesisBlock(){
+    public String addGenesisBlock(){
         Block genesisBlock = blockchainService.createGenesisBlock();
-        return genesisBlock;
+        return JSON.toJSONString(genesisBlock);
     }
     @GetMapping("/mine")
-    public Map mine(@RequestParam("data") String data){
+    public String mine(@RequestParam("data") String data){
         Map<String, Block> response = new HashMap<>();
         if(data == null){
             response.put("Null", null);
-            return response;
+            return "NOT Valid Parameter";
         }
         Block newBlock = blockchainService.createNewBlock(data);
-        String hash = blockchainService.proofOfWork(newBlock);
+        String hash = blockchainService.mine(newBlock);
         newBlock.setHash(hash);
 
         blockchainService.addNewBlockToChain(newBlock);
         response.put(data, newBlock);
-        return response;
+        return JSON.toJSONString(response);
     }
     @GetMapping("/getBlockchain")
-    public List getBlockchain(){
-        return blockchainService.getBlockchain();
+    public String getBlockchain(){
+        return JSON.toJSONString(blockchainService.getBlockchain());
     }
+
 }

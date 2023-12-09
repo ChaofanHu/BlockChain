@@ -1,12 +1,15 @@
-package pri.chaofan.blockchain;
+package pri.chaofan.blockchain.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Data
+@AllArgsConstructor
 public class Blockchain {
     private List<Block> blockChain;
 
@@ -33,7 +36,7 @@ public class Blockchain {
         return 0;
     }
 
-    public List getBlockchain(){
+    public List<Block> getBlockchain(){
         return blockChain;
     }
 }
