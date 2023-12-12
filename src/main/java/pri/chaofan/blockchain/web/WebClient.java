@@ -3,12 +3,14 @@ package pri.chaofan.blockchain.web;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pri.chaofan.blockchain.pojo.Node;
 import pri.chaofan.blockchain.service.WebService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Component
 public class WebClient {
 
     @Autowired
@@ -23,10 +25,12 @@ public class WebClient {
                     //this client ask to query this last block of other node's blockchain
                     webService.send(this,webService.getLastBlock());
                     node.getNodeList().add(this);
+                    System.out.println(node.getNodeList());
                 }
                 @Override
                 public void onMessage(String s) {
                     webService.redirectMessage(this,s);
+                    System.out.println(node.getNodeList());
                 }
 
                 @Override

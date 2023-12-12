@@ -31,7 +31,7 @@ public class WebService {
             case MessageConstant.RETURN_LAST_BLOCK -> this.blockMessageHandler(msg.getData());
 
             //client ask to get the blockchain
-            case MessageConstant.GET_BLOCKCHAIN -> send(socket, returnBlockchain());
+            case MessageConstant.GET_BLOCKCHAIN -> this.send(socket, returnBlockchain());
 
             //client receive the blockchain from server
             case MessageConstant.RETURN_BLOCKCHAIN -> this.blockchainMessageHandler(msg.getData());
@@ -41,12 +41,12 @@ public class WebService {
     public synchronized void blockMessageHandler(String block){
         Block lastBlock = JSON.parseObject(block, Block.class);
         //current node's latest node
-        Block currentLastBlock = blockchainService.getLatestBlock();
-        if (lastBlock == null){
-            broadcast(getBlockchain());
+
+        Block currentLastBlock = blockchain.getBlockchain() != null ? blockchainService.getLatestBlock() : null;
+        //if the received block's id are larger than this node's id, this node should be updated
+        if(currentLastBlock == null){
             return;
         }
-        //if the received block's id are larger than this node's id, this node should be updated
         if (lastBlock.getId()> currentLastBlock.getId()+1){
             this.broadcast(this.getBlockchain());
         } else if (lastBlock.getPreviousHash().equals(currentLastBlock.getHash())) {
@@ -102,12 +102,12 @@ public class WebService {
         msg.setData(JSON.toJSONString(blockchainService.getLatestBlock()));
         return JSON.toJSONString(msg);
     }
-    public synchronized String getBlockchain(){
+    public String getBlockchain(){
         Message message = new Message();
         message.setMessageType(MessageConstant.GET_BLOCKCHAIN);
         return JSON.toJSONString(message);
     }
-    public synchronized String returnBlockchain(){
+    public String returnBlockchain(){
         Message message = new Message();
         message.setMessageType(MessageConstant.RETURN_BLOCKCHAIN);
         message.setData(JSON.toJSONString(blockchainService.getBlockchain()));

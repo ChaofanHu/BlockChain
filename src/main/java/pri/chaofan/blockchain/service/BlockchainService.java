@@ -46,7 +46,7 @@ public class BlockchainService {
         return true;
     }
 
-    private void broadcastNewBlock(Block newBlock){
+    public void broadcastNewBlock(Block newBlock){
         Message msg = new Message();
         msg.setData(JSON.toJSONString(newBlock));
         msg.setMessageType(MessageConstant.RETURN_LAST_BLOCK);
@@ -82,6 +82,7 @@ public class BlockchainService {
     }
 
     public Block getLatestBlock(){
+
         return blockchain.getLastBlock();
     }
 }

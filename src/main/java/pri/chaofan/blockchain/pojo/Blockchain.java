@@ -9,7 +9,6 @@ import java.util.List;
 
 @Component
 @Data
-@AllArgsConstructor
 public class Blockchain {
     private List<Block> blockChain;
 
@@ -18,7 +17,7 @@ public class Blockchain {
     }
 
     public Block getLastBlock(){
-        if (blockChain != null){
+        if (blockChain != null && blockChain.size()>0){
             return  blockChain.get(blockChain.size()-1);
         }
         System.out.println("The Block Chain is null");
@@ -37,6 +36,9 @@ public class Blockchain {
     }
 
     public List<Block> getBlockchain(){
+        if (blockChain == null){
+            return null;
+        }
         return blockChain;
     }
 }

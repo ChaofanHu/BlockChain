@@ -22,16 +22,14 @@ public class WebServer {
 
         WebSocketServer socketServer = new WebSocketServer(new InetSocketAddress(port)) {
 
-
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-                System.out.println("Start!");
                 node.getNodeList().add(webSocket);
+                System.out.println(node.getNodeList());
             }
 
             @Override
             public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-
                 node.getNodeList().remove(webSocket);
             }
 
@@ -39,6 +37,7 @@ public class WebServer {
             public void onMessage(WebSocket webSocket, String s) {
                 System.out.println("Receive one Message");
                 webService.redirectMessage(webSocket,s);
+                System.out.println(node.getNodeList().get(0).getLocalSocketAddress());
             }
 
             @Override

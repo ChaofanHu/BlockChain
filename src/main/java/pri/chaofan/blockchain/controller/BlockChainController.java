@@ -36,8 +36,9 @@ public class BlockChainController {
         String hash = blockchainService.mine(newBlock);
         newBlock.setHash(hash);
         newBlock.setId(blockchainService.getBlockchain().size()+1);
-
         blockchainService.addNewBlockToChain(newBlock);
+        //broadcast the new block to other nodes
+        blockchainService.broadcastNewBlock(newBlock);
         response.put(data, newBlock);
         return JSON.toJSONString(response);
     }
