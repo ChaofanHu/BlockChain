@@ -25,16 +25,19 @@ public class WebServer {
 
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
+                System.out.println("Start!");
                 node.getNodeList().add(webSocket);
             }
 
             @Override
             public void onClose(WebSocket webSocket, int i, String s, boolean b) {
+
                 node.getNodeList().remove(webSocket);
             }
 
             @Override
             public void onMessage(WebSocket webSocket, String s) {
+                System.out.println("Receive one Message");
                 webService.redirectMessage(webSocket,s);
             }
 

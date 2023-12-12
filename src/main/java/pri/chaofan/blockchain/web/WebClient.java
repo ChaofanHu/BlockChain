@@ -24,7 +24,6 @@ public class WebClient {
                     webService.send(this,webService.getLastBlock());
                     node.getNodeList().add(this);
                 }
-
                 @Override
                 public void onMessage(String s) {
                     webService.redirectMessage(this,s);

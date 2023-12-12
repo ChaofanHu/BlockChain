@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+node:
+  port: 7001
+  address: ws://10.21.17.103:7002

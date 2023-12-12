@@ -2,12 +2,10 @@ package pri.chaofan.blockchain.service;
 
 import com.alibaba.fastjson.JSON;
 import jakarta.annotation.Resource;
+import org.java_websocket.WebSocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pri.chaofan.blockchain.pojo.Block;
-import pri.chaofan.blockchain.pojo.Blockchain;
-import pri.chaofan.blockchain.pojo.Message;
-import pri.chaofan.blockchain.pojo.MessageConstant;
+import pri.chaofan.blockchain.pojo.*;
 
 import java.util.List;
 import java.util.Random;
@@ -19,7 +17,7 @@ public class BlockchainService {
     @Resource
     private Blockchain blockchain;
     @Autowired
-    WebService webService;
+    Node node;
 
     public BlockchainService(){
         random = new Random(8824);
@@ -52,12 +50,24 @@ public class BlockchainService {
         Message msg = new Message();
         msg.setData(JSON.toJSONString(newBlock));
         msg.setMessageType(MessageConstant.RETURN_LAST_BLOCK);
-        webService.broadcast(JSON.toJSONString(msg));
+        this.broadcast(JSON.toJSONString(msg));
 
+    }
+    private void broadcast(String msg){
+        List<WebSocket> nodeList = this.node.getNodeList();
+        if (nodeList == null){
+            return;
+        }
+        for (WebSocket socket : nodeList){
+            send(socket,msg);
+        }
+    }
+    private void send(WebSocket socket, String message){
+        socket.send(message);
     }
 
     public String mine(Block block) {
-        String prefixString = new String(new char[6]).replace('\0', '0');
+        String prefixString = new String(new char[4]).replace('\0', '0');
         String hash = block.getHash();
         while (!hash.substring(0, 4).equals(prefixString)) {
             block.setNonce(block.getNonce()+1);

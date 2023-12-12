@@ -7,16 +7,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @Component
 public class Node {
 
-    @Value("${block.port}")
+    @Value("${node.port}")
     private int port;
+
+    @Value("${node.address}")
     private String address;
-    private List<WebSocket> nodeList;
+    private List<WebSocket> nodeList = new ArrayList<>();
 
 }
