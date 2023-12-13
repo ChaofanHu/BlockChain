@@ -35,9 +35,3 @@ localhost:8080/mine?data=[Your Data Here]
 localhost:8080/getBlockchain
 
 
-## Contributions
-Contributions are welcome! Please feel free to submit a pull request.
-
-## License
-This project is licensed under the [Your License] - see the LICENSE file for details.
-
