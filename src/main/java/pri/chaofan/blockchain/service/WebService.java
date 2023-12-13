@@ -44,15 +44,25 @@ public class WebService {
 
         Block currentLastBlock = blockchain.getBlockchain() != null ? blockchainService.getLatestBlock() : null;
         //if the received block's id are larger than this node's id, this node should be updated
-        if(currentLastBlock == null){
-            return;
-        }
-        if (lastBlock.getId()> currentLastBlock.getId()+1){
-            this.broadcast(this.getBlockchain());
-        } else if (lastBlock.getPreviousHash().equals(currentLastBlock.getHash())) {
-            blockchainService.addNewBlockToChain(lastBlock);
-            broadcast(this.returnLastBlock());
-            System.out.println("Add this new block into blockchain");
+        //
+        //BUG is HERE!!!!!!!!!
+        //
+//        if(currentLastBlock == null || lastBlock == null){
+//            return;
+//        }
+        if (lastBlock != null) {
+            if (currentLastBlock != null) {
+                if (lastBlock.getId()> currentLastBlock.getId()+1){
+                    System.out.println("Request blockchain!");
+                    this.broadcast(this.getBlockchain());
+                } else if (lastBlock.getPreviousHash().equals(currentLastBlock.getHash())) {
+                    blockchainService.addNewBlockToChain(lastBlock);
+                    broadcast(this.returnLastBlock());
+                    System.out.println("Add this new block into blockchain");
+                }
+            } else if (currentLastBlock == null) {
+                this.broadcast(getBlockchain());
+            }
         }
     }
 
@@ -120,8 +130,10 @@ public class WebService {
         if (nodeList == null){
             return;
         }
+        System.out.println("There are : "+ nodeList.size() + " nodes!");
         for (WebSocket socket : nodeList){
             send(socket,msg);
+            System.out.println("Sent to " + socket.getLocalSocketAddress());
         }
     }
     //send message

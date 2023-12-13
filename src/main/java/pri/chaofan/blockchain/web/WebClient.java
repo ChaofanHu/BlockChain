@@ -25,12 +25,10 @@ public class WebClient {
                     //this client ask to query this last block of other node's blockchain
                     webService.send(this,webService.getLastBlock());
                     node.getNodeList().add(this);
-                    System.out.println(node.getNodeList());
                 }
                 @Override
                 public void onMessage(String s) {
                     webService.redirectMessage(this,s);
-                    System.out.println(node.getNodeList());
                 }
 
                 @Override

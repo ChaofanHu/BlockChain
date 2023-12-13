@@ -23,6 +23,7 @@ public class BlockChainController {
     @GetMapping("/genesis")
     public String addGenesisBlock(){
         Block genesisBlock = blockchainService.createGenesisBlock();
+        blockchainService.broadcastNewBlock(genesisBlock);
         return JSON.toJSONString(genesisBlock);
     }
     @GetMapping("/mine")

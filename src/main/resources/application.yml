@@ -1,6 +1,6 @@
 server:
-  port: 8080
+  port: 8090
 
 node:
-  port: 7001
-  address: ws://10.21.17.103:7002
+  port: 7002
+  address: ws://localhost:7001

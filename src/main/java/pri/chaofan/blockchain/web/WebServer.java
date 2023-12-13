@@ -25,7 +25,7 @@ public class WebServer {
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
                 node.getNodeList().add(webSocket);
-                System.out.println(node.getNodeList());
+                System.out.println("current there are" + node.getNodeList().size() + "nodes");
             }
 
             @Override
@@ -36,8 +36,9 @@ public class WebServer {
             @Override
             public void onMessage(WebSocket webSocket, String s) {
                 System.out.println("Receive one Message");
+                System.out.println("Message is : " + s);
                 webService.redirectMessage(webSocket,s);
-                System.out.println(node.getNodeList().get(0).getLocalSocketAddress());
+                System.out.println(node.getNodeList().get(0).getLocalSocketAddress().getHostString());
             }
 
             @Override
@@ -51,6 +52,6 @@ public class WebServer {
             }
         };
         socketServer.start();
-        System.out.println("listening websocket p2p port on: " + port);
+        System.out.println("This node's port is: " + node.getPort());
     }
 }
